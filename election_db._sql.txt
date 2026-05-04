@@ -1,0 +1,76 @@
+-- Create Database
+CREATE DATABASE election_db;
+USE election_db;
+
+-- ======================
+-- TABLE: positions
+-- ======================
+CREATE TABLE positions (
+  posID INT AUTO_INCREMENT PRIMARY KEY,
+  posName VARCHAR(100) NOT NULL,
+  numOfPositions INT DEFAULT 1,
+  PosStat TINYINT DEFAULT 1
+);
+
+-- ======================
+-- TABLE: candidates
+-- ======================
+CREATE TABLE candidates (
+  candID INT AUTO_INCREMENT PRIMARY KEY,
+  candFName VARCHAR(100) NOT NULL,
+  candMName VARCHAR(100) NOT NULL,
+  candLName VARCHAR(100) NOT NULL,
+  posID INT NOT NULL,
+  candStat TINYINT DEFAULT 1,
+  FOREIGN KEY (posID) REFERENCES positions(posID)
+);
+
+-- ======================
+-- TABLE: voters
+-- ======================
+CREATE TABLE voters (
+  voterID INT AUTO_INCREMENT PRIMARY KEY,
+  voterFName VARCHAR(100) NOT NULL,
+  voterLName VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  voterPass VARCHAR(255) NOT NULL,
+  voterStat TINYINT DEFAULT 1,
+  voted TINYINT DEFAULT 0
+);
+
+-- ======================
+-- TABLE: votes
+-- ======================
+CREATE TABLE votes (
+  voteID INT AUTO_INCREMENT PRIMARY KEY,
+  voterID INT NOT NULL,
+  candID INT NOT NULL,
+  posID INT NOT NULL,
+  FOREIGN KEY (voterID) REFERENCES voters(voterID),
+  FOREIGN KEY (candID) REFERENCES candidates(candID),
+  FOREIGN KEY (posID) REFERENCES positions(posID)
+);
+
+-- ======================
+-- SAMPLE DATA (OPTIONAL)
+-- ======================
+
+-- Positions
+INSERT INTO positions (posName, numOfPositions) VALUES
+('President', 1),
+('Vice President', 1),
+('Senator', 12);
+
+-- Candidates
+INSERT INTO candidates (candFName, candMName, candLName, posID) VALUES
+('Juan', 'D', 'Cruz', 1),
+('Pedro', 'S', 'Santos', 1),
+('Maria', 'A', 'Reyes', 2),
+('Ana', 'B', 'Garcia', 2),
+('Carlos', 'M', 'Lopez', 3),
+('Jose', 'R', 'Torres', 3);
+
+-- Voters (simplified demo accounts)
+INSERT INTO voters (voterFName, voterLName, email, voterPass) VALUES
+('Test', 'User', 'test@gmail.com', '123'),
+('Demo', 'User', 'demo@gmail.com', '123');
